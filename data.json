@@ -1,0 +1,284 @@
+{
+  "patients": [
+    {
+      "id": "patient_001",
+      "name": "John Doe",
+      "eligible": true,
+      "demographics": {
+        "age": 65,
+        "gender": "Male",
+        "ward": "Respiratory",
+        "bed": "A12"
+      },
+      "clinical_info": {
+        "diagnosis": "Pneumonia",
+        "vitals": {"BP": "120/80", "HR": 78},
+        "blood_results": {"WBC": 6.2, "CRP": 12},
+        "medical_specialty": "Respiratory",
+        "notes": [
+          {
+            "note_id": "n1",
+            "type": "ED Triage",
+            "title": "Initial Triage",
+            "date": "2025-01-30",
+            "content": "Patient presented with symptoms of pneumonia including productive cough and fever. Vitals were stable on arrival."
+          },
+          {
+            "note_id": "n2",
+            "type": "Medical Inpatient Progress",
+            "title": "Daily Progress",
+            "date": "2025-01-31",
+            "content": "Patient shows signs of improvement; oxygen saturation remains stable and fever has subsided. No signs of sepsis."
+          },
+          {
+            "note_id": "n3",
+            "type": "Radiology Report",
+            "title": "Chest X-Ray",
+            "date": "2025-01-30",
+            "content": "The X-ray shows bilateral infiltrates consistent with pneumonia."
+          }
+        ]
+      },
+      "similarity_score": 0.89,
+      "feature_importance": {
+        "pneumonia": 0.12,
+        "stable_vitals": 0.10,
+        "cough": 0.08,
+        "fever": 0.07,
+        "oxygen_saturation": 0.06,
+        "chest_xray": 0.05,
+        "lab_results": 0.04,
+        "age": 0.03,
+        "comorbidity": 0.02,
+        "respiratory_rate": 0.02
+      },
+      "similar_patients": [
+        {
+          "id": "patient_010",
+          "name": "Alice Smith",
+          "key_factors": "Pneumonia, stable vitals, and rapid improvement."
+        },
+        {
+          "id": "patient_011",
+          "name": "Bob Johnson",
+          "key_factors": "Similar chest x-ray findings and no high-risk factors."
+        },
+        {
+          "id": "patient_012",
+          "name": "Cathy Lee",
+          "key_factors": "Comparable lab results and clinical presentation."
+        }
+      ]
+    },
+    {
+      "id": "patient_002",
+      "name": "Mary Williams",
+      "eligible": false,
+      "demographics": {
+        "age": 72,
+        "gender": "Female",
+        "ward": "Cardiology",
+        "bed": "B04"
+      },
+      "clinical_info": {
+        "diagnosis": "Heart Failure",
+        "vitals": {"BP": "150/95", "HR": 88},
+        "blood_results": {"BNP": 450},
+        "medical_specialty": "Cardiology",
+        "notes": [
+          {
+            "note_id": "n4",
+            "type": "ED Triage",
+            "title": "Initial Assessment",
+            "date": "2025-01-29",
+            "content": "Patient admitted with acute shortness of breath. History of heart failure noted. Elevated blood pressure observed."
+          },
+          {
+            "note_id": "n5",
+            "type": "Nursing Progress",
+            "title": "Shift Report",
+            "date": "2025-01-30",
+            "content": "Patient remains on high flow oxygen with intermittent chest pain."
+          }
+        ]
+      },
+      "similarity_score": 0.45,
+      "feature_importance": {
+        "heart_failure": 0.15,
+        "high_bp": 0.12,
+        "shortness_of_breath": 0.10,
+        "oxygen_dependency": 0.09,
+        "chest_pain": 0.08,
+        "ed_note": 0.05,
+        "nursing": 0.04,
+        "age": 0.03,
+        "comorbidity": 0.02,
+        "BNP": 0.02
+      },
+      "similar_patients": []
+    },
+    {
+      "id": "patient_003",
+      "name": "Robert Brown",
+      "eligible": true,
+      "demographics": {
+        "age": 58,
+        "gender": "Male",
+        "ward": "General",
+        "bed": "C08"
+      },
+      "clinical_info": {
+        "diagnosis": "Pneumonia",
+        "vitals": {"BP": "118/78", "HR": 75},
+        "blood_results": {"WBC": 5.8, "CRP": 10},
+        "medical_specialty": "Respiratory",
+        "notes": [
+          {
+            "note_id": "n6",
+            "type": "ED Triage",
+            "title": "Emergency Assessment",
+            "date": "2025-01-28",
+            "content": "Patient shows signs of pneumonia with mild cough and no severe respiratory distress."
+          },
+          {
+            "note_id": "n7",
+            "type": "Allied Health Assessment",
+            "title": "Physiotherapy Review",
+            "date": "2025-01-29",
+            "content": "Mobility assessment indicates the patient is stable and can perform basic activities independently."
+          }
+        ]
+      },
+      "similarity_score": 0.85,
+      "feature_importance": {
+        "pneumonia": 0.11,
+        "mild_cough": 0.09,
+        "mobility": 0.08,
+        "vitals": 0.07,
+        "oxygen_saturation": 0.06,
+        "lab_results": 0.05,
+        "age": 0.04,
+        "comorbidity": 0.03,
+        "progress_note": 0.02,
+        "ed_assessment": 0.02
+      },
+      "similar_patients": [
+        {
+          "id": "patient_013",
+          "name": "Emily Davis",
+          "key_factors": "Pneumonia with mild symptoms and good mobility."
+        },
+        {
+          "id": "patient_014",
+          "name": "Michael Miller",
+          "key_factors": "Stable vitals and similar lab results."
+        }
+      ]
+    },
+    {
+      "id": "patient_004",
+      "name": "Patricia Garcia",
+      "eligible": false,
+      "demographics": {
+        "age": 80,
+        "gender": "Female",
+        "ward": "Geriatrics",
+        "bed": "D02"
+      },
+      "clinical_info": {
+        "diagnosis": "Sepsis",
+        "vitals": {"BP": "90/60", "HR": 110},
+        "blood_results": {"WBC": 13.5, "CRP": 55},
+        "medical_specialty": "Infectious Diseases",
+        "notes": [
+          {
+            "note_id": "n8",
+            "type": "Medical Inpatient Progress",
+            "title": "Sepsis Management",
+            "date": "2025-01-27",
+            "content": "Patient diagnosed with sepsis. Vitals are unstable and require close monitoring. High dependency care recommended."
+          }
+        ]
+      },
+      "similarity_score": 0.30,
+      "feature_importance": {
+        "sepsis": 0.20,
+        "unstable_vitals": 0.15,
+        "high_dependency": 0.10,
+        "elevated_wbc": 0.08,
+        "crp": 0.07,
+        "age": 0.06,
+        "infection": 0.05,
+        "progress_note": 0.04,
+        "critical": 0.03,
+        "comorbidity": 0.02
+      },
+      "similar_patients": []
+    },
+    {
+      "id": "patient_005",
+      "name": "James Wilson",
+      "eligible": true,
+      "demographics": {
+        "age": 50,
+        "gender": "Male",
+        "ward": "Respiratory",
+        "bed": "E05"
+      },
+      "clinical_info": {
+        "diagnosis": "Pneumonia",
+        "vitals": {"BP": "115/75", "HR": 70},
+        "blood_results": {"WBC": 6.0, "CRP": 8},
+        "medical_specialty": "Respiratory",
+        "notes": [
+          {
+            "note_id": "n9",
+            "type": "ED Triage",
+            "title": "Initial Presentation",
+            "date": "2025-01-26",
+            "content": "Patient presented with cough and fever. No signs of respiratory distress on arrival and initial assessment supports pneumonia."
+          },
+          {
+            "note_id": "n10",
+            "type": "Lab Results",
+            "title": "Blood Test Report",
+            "date": "2025-01-26",
+            "content": "Blood test results within normal range aside from slightly elevated CRP."
+          },
+          {
+            "note_id": "n11",
+            "type": "Nursing Progress",
+            "title": "Shift Update",
+            "date": "2025-01-27",
+            "content": "Patient has remained stable overnight with good oxygen saturation and no new symptoms."
+          }
+        ]
+      },
+      "similarity_score": 0.87,
+      "feature_importance": {
+        "pneumonia": 0.13,
+        "stable_vitals": 0.11,
+        "fever": 0.09,
+        "cough": 0.08,
+        "lab_results": 0.07,
+        "oxygen_saturation": 0.06,
+        "nursing": 0.05,
+        "age": 0.03,
+        "comorbidity": 0.02,
+        "ed_assessment": 0.02
+      },
+      "similar_patients": [
+        {
+          "id": "patient_015",
+          "name": "Laura Martinez",
+          "key_factors": "Stable pneumonia case with reassuring lab and vitals."
+        },
+        {
+          "id": "patient_016",
+          "name": "Kevin Anderson",
+          "key_factors": "Comparable in presentation and rapid improvement."
+        }
+      ]
+    }
+  ]
+}

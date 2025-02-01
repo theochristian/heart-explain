@@ -14,27 +14,47 @@ def random_date():
         seconds=random.randint(0, int((end - start).total_seconds()))
     )).strftime("%Y-%m-%d")
 
-# Create multiple dummy notes per patient of different types.
+# Create multiple dummy notes per patient of different types with varied content.
 def create_notes():
     note_types = ["ED Triage Note", "Medical Inpatient Progress Note", "Nursing Progress Note",
                   "Allied Health Assessment", "Lab Results", "Radiology Report"]
+    snomed_spans = [
+        ("severe hypertension", "C001", "Hypertension"),
+        ("mild diabetes mellitus", "C002", "Diabetes Mellitus"),
+        ("chronic asthma symptoms", "C003", "Asthma"),
+        ("acute COPD exacerbation", "C004", "Chronic Obstructive Pulmonary Disease"),
+        ("possible pneumonia", "C005", "Pneumonia"),
+        ("minor fracture", "C006", "Fracture")
+    ]
+    prediction_spans = [
+        ("stable condition", "Positive"),
+        ("elevated CRP levels", "Negative"),
+        ("improving respiratory status", "Positive"),
+        ("declining oxygen saturation", "Negative")
+    ]
     notes = []
     for i in range(1, 6):
         note_type = random.choice(note_types)
+        # Choose a random SNOMED span and prediction span for this note
+        snomed_span = random.choice(snomed_spans)
+        prediction_span = random.choice(prediction_spans)
+        note_text = (
+            f"This is a detailed {note_type.lower()} for the patient. "
+            f"The patient presents with symptoms including fever, cough, and shortness of breath. "
+            "Recent lab results show changes that need to be interpreted in context. "
+            "For instance, the patient's condition is noted as " + snomed_span[0] + ". "
+            "In other areas, the report highlights that the patient has a " + prediction_span[0] + ". "
+            "Additional context is provided by other clinical findings and patient history which suggest further investigation. "
+            "The overall assessment indicates a need for close monitoring and potential intervention."
+        )
         note = {
             "id": f"note-{i}",
             "type": note_type,
             "title": f"{note_type} Title {i}",
             "date": random_date(),
-            "text": (
-                f"This is a detailed {note_type.lower()} for the patient. "
-                "The patient presents with symptoms including fever, cough, and shortness of breath. "
-                "Blood results indicate elevated white cell count and CRP levels. "
-                "Further testing is pending, including a COVID-19 PCR and a chest X-ray. "
-                "Clinical findings are consistent with a mild to moderate infection, and the patient is currently "
-                "stable on the ward. Additional notes mention a history of hypertension and diabetes. "
-                "There is also evidence of improvement in respiratory parameters over the past 24 hours."
-            )
+            "text": note_text,
+            "snomed_span": snomed_span,  # (phrase, concept_id, concept_name)
+            "prediction_span": prediction_span  # (phrase, impact)
         }
         notes.append(note)
     return notes
@@ -45,38 +65,37 @@ def generate_feature_importance():
     importance = []
     impact = []
     for i in range(1, 51):
-        features.append(f"Feature {i}")
-        # Generate random importance scores between 0 and 1, normalized later
+        features.append(f"Word/Bi-gram {i}")
+        # Generate random importance scores between 0 and 1
         importance.append(random.random())
         impact.append(random.choice(["Positive", "Negative", "Neutral"]))
-    # Normalize importance so they sum roughly to 1
     total = sum(importance)
     importance = [round(x/total, 3) for x in importance]
-    return {"Feature": features, "Importance": importance, "Impact": impact}
+    data = pd.DataFrame({"Feature": features, "Importance": importance, "Impact": impact})
+    # Sort descending by Importance
+    data = data.sort_values(by="Importance", ascending=False)
+    return data
 
 # Generate dummy knowledge graph data with more nodes and edges.
 def generate_kg():
-    # Each node is a tuple (concept_id, concept_name)
     nodes = [
         ("C001", "Hypertension"), ("C002", "Diabetes Mellitus"), ("C003", "Asthma"),
         ("C004", "Chronic Obstructive Pulmonary Disease"), ("C005", "Pneumonia"),
         ("C006", "Fracture"), ("C007", "Osteoporosis"), ("C008", "Sepsis")
     ]
-    # Define some dummy edges between concepts
     edges = [
         (nodes[0], nodes[1]), (nodes[2], nodes[3]), (nodes[4], nodes[7]),
-        (nodes[5], nodes[6]), (nodes[1], nodes[7]), (nodes[3], nodes[7]), (nodes[0], nodes[8]) if len(nodes) > 8 else None
+        (nodes[5], nodes[6]), (nodes[1], nodes[7]), (nodes[3], nodes[7])
     ]
-    # Filter out any None entries
-    edges = [edge for edge in edges if edge is not None]
     return {"nodes": nodes, "edges": edges}
 
 # Define dummy data per patient.
 dummy_data = {
     "Patient A": {
-        "demographics": "65-year-old male, with a history of hypertension and type 2 diabetes. Ward: Cardiology, Bed: 12B.",
+        "demographics": "65-year-old male with a history of hypertension and type 2 diabetes. Ward: Cardiology, Bed: 12B.",
         "tests": "Blood test: WCC 12x10^9/L, CRP 45 mg/L; Awaiting chest X-ray and PCR results.",
         "specialty": "Cardiology",
+        "prediction": "Eligible",
         "summary": {
             "eligible": "Eligible: Stable vital signs, controlled blood results, and improvement noted in recent progress. "
                         "See [Lab Results](#note-3) and [Nursing Progress Note](#note-2) for details.",
@@ -88,13 +107,14 @@ dummy_data = {
         "kg": generate_kg()
     },
     "Patient B": {
-        "demographics": "72-year-old female, history of COPD and controlled asthma. Ward: Respiratory, Bed: 7A.",
+        "demographics": "72-year-old female with a history of COPD and controlled asthma. Ward: Respiratory, Bed: 7A.",
         "tests": "Blood test: WCC 10x10^9/L, CRP 20 mg/L; Awaiting sputum culture and CT scan.",
         "specialty": "Respiratory",
+        "prediction": "Not Eligible",
         "summary": {
-            "eligible": "Eligible: Well-controlled respiratory parameters, clear imaging. "
+            "eligible": "Eligible: Well-controlled respiratory parameters and clear imaging. "
                         "See [Radiology Report](#note-4) and [Medical Inpatient Progress Note](#note-2).",
-            "not_eligible": "Not Suitable: Concerns of COPD exacerbation due to slight drop in oxygen saturation. "
+            "not_eligible": "Not Suitable: Concerns of COPD exacerbation due to a slight drop in oxygen saturation. "
                             "Refer to [Nursing Progress Note](#note-3)."
         },
         "notes": create_notes(),
@@ -102,13 +122,14 @@ dummy_data = {
         "kg": generate_kg()
     },
     "Patient C": {
-        "demographics": "58-year-old male, minor fracture history with concerns about bone density. Ward: Orthopaedics, Bed: 3C.",
+        "demographics": "58-year-old male with a minor fracture history and concerns about bone density. Ward: Orthopaedics, Bed: 3C.",
         "tests": "Blood test: Calcium normal, Vitamin D low; Awaiting DXA scan results.",
         "specialty": "Orthopaedics",
+        "prediction": "Eligible",
         "summary": {
             "eligible": "Eligible: Minor fracture with adequate pain control and stability. "
                         "See [Allied Health Assessment](#note-5).",
-            "not_eligible": "Not Suitable: Underlying osteoporosis suspected; further bone density evaluation required. "
+            "not_eligible": "Not Suitable: Suspected underlying osteoporosis; further bone density evaluation required. "
                             "Refer to [Lab Results](#note-2)."
         },
         "notes": create_notes(),
@@ -126,23 +147,57 @@ patient_info = dummy_data[selected_patient]
 
 st.title("Hospital In The Home Model Explainability")
 
-tabs = st.tabs(["Prediction Summary", "Knowledge Graph", "EMR Snippets", "Feature Importance"])
+# Define tabs in desired order with brief explainer text where applicable.
+tabs = st.tabs(["Prediction Summary", "EMR Snippets", "Feature Importance", "SNOMED-CT-AU"])
 
 # --- Prediction Summary ---
 with tabs[0]:
     st.header("Prediction Summary")
-    st.subheader(f"Eligibility Summary for {selected_patient}")
     st.markdown(f"**Demographics & Background:** {patient_info['demographics']}")
     st.markdown(f"**Medical Specialty:** {patient_info['specialty']}")
     st.markdown(f"**Tests & Blood Results:** {patient_info['tests']}")
+    # Highlight prediction with color
+    prediction = patient_info["prediction"]
+    color = "green" if prediction == "Eligible" else "red"
+    st.markdown(f"<h3 style='color: {color};'>Prediction: {prediction}</h3>", unsafe_allow_html=True)
     st.write(patient_info["summary"]["eligible"])
     st.write(patient_info["summary"]["not_eligible"])
 
-# --- Knowledge Graph Visualization ---
+# --- EMR Snippets ---
+with tabs[1]:
+    st.header("EMR Snippets")
+    st.write("Below are multiple clinical notes from different sources with context. Click on a note hyperlink from the Prediction Summary to jump here.")
+    toggle = st.toggle("Toggle Highlight Mode (SNOMED vs. Prediction Impact)")
+    for note in patient_info["notes"]:
+        st.markdown(f"<a name='{note['id']}'></a>", unsafe_allow_html=True)
+        st.subheader(f"{note['title']} ({note['type']}) - {note['date']}")
+        snippet = note["text"]
+        if toggle:
+            # SNOMED highlight: replace the snomed span (multi-word) with tooltip-enabled HTML.
+            phrase, concept_id, concept_name = note["snomed_span"]
+            snippet = snippet.replace(phrase, f"<span title='Concept ID: {concept_id}, {concept_name}' style='background-color: yellow;'>{phrase}</span>")
+        else:
+            # Prediction impact view: replace the prediction span with color-coded highlight.
+            phrase, impact = note["prediction_span"]
+            color = "lightgreen" if impact == "Positive" else "lightcoral" if impact == "Negative" else "lightgray"
+            snippet = snippet.replace(phrase, f"<span style='background-color: {color};'>{phrase}</span>")
+        st.markdown(snippet[:300] + " ...", unsafe_allow_html=True)
+        st.markdown("---")
+
+# --- Feature Importance Visualization ---
+with tabs[2]:
+    st.header("Feature Importance")
+    st.write("This chart shows the importance of various words/bi-grams extracted from the patient records. The features are sorted in descending order by importance.")
+    fi = patient_info["feature_importance"]
+    fig = px.bar(fi, x="Importance", y="Feature", orientation="h", 
+                 color="Impact", color_discrete_map={"Positive": "green", "Negative": "red", "Neutral": "gray"})
+    fig.update_layout(xaxis_title="Importance Score", yaxis_title="Word/Bi-gram", bargap=0.4, height=800)
+    st.plotly_chart(fig)
+
+# --- SNOMED-CT-AU (Knowledge Graph) ---
 def render_knowledge_graph(kg_data):
     G = nx.Graph()
     for concept in kg_data["nodes"]:
-        # concept: (concept_id, concept_name)
         G.add_node(concept[1], concept_id=concept[0], concept_name=concept[1])
     for edge in kg_data["edges"]:
         G.add_edge(edge[0][1], edge[1][1])
@@ -179,41 +234,10 @@ def render_knowledge_graph(kg_data):
                     ))
     return fig
 
-with tabs[1]:
-    st.header("Knowledge Graph Visualization")
+with tabs[3]:
+    st.header("SNOMED-CT-AU")
+    st.write("This visualization shows the relationships between SNOMED-CT-AU concepts derived from the patient records. Hover over a node to see detailed information.")
     kg_fig = render_knowledge_graph(patient_info["kg"])
     st.plotly_chart(kg_fig)
-
-# --- EMR Snippets ---
-with tabs[2]:
-    st.header("EMR Snippets")
-    toggle = st.toggle("Toggle Highlight Mode (SNOMED vs. Prediction Impact)")
-    # Display each note with title, type, date and snippet
-    for note in patient_info["notes"]:
-        st.markdown(f"<a name='{note['id']}'></a>", unsafe_allow_html=True)
-        st.subheader(f"{note['title']} ({note['type']}) - {note['date']}")
-        # For demonstration, assume the highlight span is the phrase 'elevated' or 'stable' randomly
-        snippet = note["text"]
-        if toggle:
-            # SNOMED highlight view: highlight concepts with tooltips (dummy example)
-            snippet = snippet.replace("hypertension", "<span title='Concept ID: C001, Hypertension' style='background-color:yellow;'>hypertension</span>")
-            snippet = snippet.replace("diabetes", "<span title='Concept ID: C002, Diabetes Mellitus' style='background-color:yellow;'>diabetes</span>")
-        else:
-            # Prediction impact view: highlight positive vs negative terms
-            snippet = snippet.replace("stable", "<span style='background-color:lightgreen;'>stable</span>")
-            snippet = snippet.replace("elevated", "<span style='background-color:lightcoral;'>elevated</span>")
-        # Show some context before and after the highlight by truncating to 300 characters
-        st.markdown(snippet[:300] + " ...", unsafe_allow_html=True)
-        st.markdown("---")
-
-# --- Feature Importance Visualization ---
-with tabs[3]:
-    st.header("Feature Importance")
-    fi = patient_info["feature_importance"]
-    feature_data = pd.DataFrame(fi)
-    fig = px.bar(feature_data, x="Importance", y="Feature", orientation="h", 
-                 color="Impact", color_discrete_map={"Positive": "green", "Negative": "red", "Neutral": "gray"})
-    fig.update_layout(xaxis_title="Importance Score", yaxis_title="Feature", bargap=0.4, height=800)
-    st.plotly_chart(fig)
 
 st.caption("Prototype for Model Explainability Dashboard")

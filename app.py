@@ -51,7 +51,7 @@ with tab2:
     st.write("Below are the clinical notes used by the model. Click on a note hyperlink from the Prediction Summary to jump here.")
     snippets = extract_emr_snippets(patient)
     for snippet in snippets:
-        st.markdown(f"**{snippet['type']}** - {snippet['title']} ({snippet['date']})")
+        st.markdown(f"📝 **{snippet['type']}** - {snippet['title']} ({snippet['date']})")
         
         snippet_text = snippet["snippet"]
         # For each highlight, replace the key text with styled HTML markup

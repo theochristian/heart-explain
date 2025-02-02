@@ -1,6 +1,6 @@
 # Hospital In The Home Model Explainability Prototype
 
-This is a proof-of-concept (PoC) Streamlit application built to provide explainability for the Home-based Eligibility Analysis and Recommendation Tool (HEART), a machine learning model that identifies patients eligible for Hospital In The Home care. The app is designed to build clinician trust by visualizing model predictions, providing text-based rationales, displaying EMR snippets with relevant highlights, showcasing feature importances, and comparing the patient with similar past cases.
+This is a proof-of-concept (PoC) Streamlit application built to provide explainability for the Home-based Eligibility Analysis and Recommendation Tool (HEART). The app uses machine learning to predict patient eligibility for home-based care and is designed to build clinician trust by visualizing model predictions, providing text-based rationales, displaying EMR snippets with relevant highlights, showcasing feature importances, and comparing the patient with similar past cases.
 
 ## Features
 

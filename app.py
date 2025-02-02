@@ -6,7 +6,7 @@ st.set_page_config(page_title="Hospital In The Home Model Explainability", layou
 
 # Global title for all pages
 st.title("HEART Prediction Explorer")
-st.caption("A tool designed for clinicians to explore and understand factors \
+st.caption("A tool designed for clinicians to explore factors \
            influencing predictions for Hospital in the Home eligibility.")
 
 # Load patient data

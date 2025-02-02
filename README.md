@@ -1,6 +1,6 @@
 # Hospital In The Home Model Explainability Prototype
 
-This is a proof-of-concept (PoC) Streamlit application built to provide explainability for a machine learning model that identifies patients eligible for Hospital In The Home care. The app is designed to build clinician trust by visualizing model predictions, providing text-based rationales, displaying EMR snippets with relevant highlights, showcasing feature importances, and comparing the patient with similar past cases.
+This is a proof-of-concept (PoC) Streamlit application built to provide explainability for the Home-based Eligibility Analysis and Recommendation Tool (HEART), a machine learning model that identifies patients eligible for Hospital In The Home care. The app is designed to build clinician trust by visualizing model predictions, providing text-based rationales, displaying EMR snippets with relevant highlights, showcasing feature importances, and comparing the patient with similar past cases.
 
 ## Features
 
@@ -27,8 +27,8 @@ This is a proof-of-concept (PoC) Streamlit application built to provide explaina
 ## Data Sources & Structure
 
 - **Data File:**  
-  The app uses a JSON file (`data.json`) to load dummy patient data. The dummy data includes:
-  - Patient demographics and clinical information.
+  The app uses a JSON file (`data.json`) to load dummy patient data. The dataset includes:
+  - Patient demographics and admission details.
   - Clinical notes of various types (e.g., ED Triage, Radiology Report).
   - Similarity scores and feature importance values.
   - Similar patients information for nearest-neighbor visualizations.
@@ -36,16 +36,27 @@ This is a proof-of-concept (PoC) Streamlit application built to provide explaina
 - **Helper Functions:**  
   Helper functions for loading data, generating rationale, extracting EMR snippets, plotting feature importance, and displaying similar patients are contained in the `helpers.py` file.
 
+  - **Application Logic:**
+  The application logic is implemented in the `app.py` file. It includes:
+- Loading patient data from the JSON file.
+- Setting up the Streamlit interface with a sidebar for patient selection and multiple tabs for different views.
+- Displaying prediction summaries, EMR snippets, feature importance charts, and similar patients.
+- Utilizing helper functions from `helpers.py` to process and display data effectively.
+
 ## Getting Started
 
 ### Prerequisites
 
-Ensure you have Python 3.7+ installed along with the following packages:
+Ensure you have Python 3.12+ installed along with the following packages:
 
 - streamlit
 - matplotlib
 
-Install dependencies using:
+Dependancies and python environment managed by UV. 
+
+### Running app
+
+To run app:
 
 ```bash
-pip install streamlit matplotlib
+uv run streamlit run app.py

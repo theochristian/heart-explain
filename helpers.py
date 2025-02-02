@@ -22,7 +22,7 @@ def generate_prediction_rationale(patient):
     }
     
     # Build a simple rationale text (hyperlinks to notes will be simulated using markdown anchors)
-    rationale_lines = [f"**Patient is eligible for home care because:**"]
+    rationale_lines = [f"#### Prediction based on:"]
     for key, value in criteria.items():
         # For blood results (a dict), convert to a string
         if isinstance(value, dict):

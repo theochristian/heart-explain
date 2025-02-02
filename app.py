@@ -4,9 +4,10 @@ from helpers import load_data, generate_prediction_rationale, extract_emr_snippe
 # Set page config for better UX
 st.set_page_config(page_title="Hospital In The Home Model Explainability", layout="wide")
 
-# Global title and caption for all pages
-st.title("Hospital In The Home Model Explainability")
-st.caption("Prototype for Model Explainability Data Tool")
+# Global title for all pages
+st.title("HEART Model Explainability")
+st.caption("Prototype designed to build confidence and support the safe and responsible \
+           adoption of Machine Learning and Artifificial Intelligence at Alfred Health")
 
 # Load patient data
 patients = load_data()
@@ -24,7 +25,6 @@ st.sidebar.write(f"**Ward:** {patient['demographics']['ward']} (Bed {patient['de
 
 # Main panel with tabs
 tab1, tab2, tab3, tab4 = st.tabs(["Prediction Summary", "EMR Snippets", "Feature Importance", "Similar Patients"])
-
 with tab1:
     st.header("Prediction Summary")
     # Use color to highlight the prediction. Green for eligible, red for not eligible.
@@ -71,3 +71,6 @@ with tab3:
 with tab4:
     st.header("Similar Patients")
     display_similar_patients(patient)
+
+# Global footnote for all pages
+# st.caption("Prototype for Model Explainability Data Tool")

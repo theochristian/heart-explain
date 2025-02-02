@@ -1,0 +1,164 @@
+{
+    "patients": [
+      {
+        "id": "patient_001",
+        "name": "John Doe",
+        "eligible": true,
+        "demographics": {
+          "age": 65,
+          "gender": "Male",
+          "ward": "Respiratory",
+          "bed": "A12"
+        },
+        "clinical_info": {
+          "diagnosis": "Pneumonia",
+          "vitals": {"BP": "120/80", "HR": 78},
+          "blood_results": {"WBC": 6.2, "CRP": 12},
+          "medical_specialty": "Respiratory",
+          "admission_events": [
+            {
+              "type": "ED",
+              "start_date": "2025-01-30T08:00:00",
+              "end_date": "2025-01-30T14:00:00",
+              "location": "Emergency Department"
+            },
+            {
+              "type": "Ward Admission",
+              "start_date": "2025-01-30T14:00:00",
+              "end_date": "2025-02-02T16:00:00",
+              "location": "Respiratory Ward"
+            }
+          ],
+          "clinical_events": [
+            {
+              "type": "Triage",
+              "event_date": "2025-01-30T08:00:00",
+              "category": "Assessment",
+              "details": "Initial ED triage assessment",
+              "values": {
+                "BP": "120/80",
+                "HR": 78,
+                "SpO2": "94%"
+              }
+            },
+            {
+              "type": "Pathology",
+              "event_date": "2025-01-30T09:30:00",
+              "category": "Diagnostic",
+              "details": "Blood tests collected",
+              "results": {
+                "WBC": 6.2,
+                "CRP": 12
+              },
+              "result_date": "2025-01-30T11:00:00"
+            },
+            {
+              "type": "Imaging",
+              "event_date": "2025-01-30T10:00:00",
+              "category": "Diagnostic",
+              "details": "Chest X-Ray",
+              "results": "Bilateral infiltrates consistent with pneumonia",
+              "result_date": "2025-01-30T10:30:00"
+            }
+          ],
+          "notes": [
+            {
+              "note_id": "n1",
+              "type": "ED Triage",
+              "title": "Initial Assessment",
+              "start_date": "2025-01-30T08:00:00",
+              "end_date": "2025-01-30T09:00:00",
+              "content": "Patient presented with symptoms of pneumonia including productive cough and fever. Vitals were stable on arrival."
+            }
+          ]
+        },
+        "similarity_score": 0.89,
+        "feature_importance": {
+          "pneumonia": 0.12,
+          "stable_vitals": 0.10,
+          "cough": 0.08,
+          "fever": 0.07,
+          "oxygen_saturation": 0.06
+        }
+      },
+      {
+        "id": "patient_002",
+        "name": "Mary Williams",
+        "eligible": false,
+        "demographics": {
+          "age": 72,
+          "gender": "Female",
+          "ward": "Cardiology",
+          "bed": "B04"
+        },
+        "clinical_info": {
+          "diagnosis": "Heart Failure",
+          "vitals": {"BP": "150/95", "HR": 88},
+          "blood_results": {"BNP": 450},
+          "medical_specialty": "Cardiology",
+          "admission_events": [
+            {
+              "type": "ED",
+              "start_date": "2025-01-29T15:00:00",
+              "end_date": "2025-01-29T22:00:00",
+              "location": "Emergency Department"
+            },
+            {
+              "type": "CCU",
+              "start_date": "2025-01-29T22:00:00",
+              "end_date": "2025-01-30T14:00:00",
+              "location": "Coronary Care Unit"
+            },
+            {
+              "type": "Ward Admission",
+              "start_date": "2025-01-30T14:00:00",
+              "end_date": "2025-02-03T10:00:00",
+              "location": "Cardiology Ward"
+            }
+          ],
+          "clinical_events": [
+            {
+              "type": "Triage",
+              "event_date": "2025-01-29T15:00:00",
+              "category": "Assessment",
+              "details": "Initial ED assessment",
+              "values": {
+                "BP": "150/95",
+                "HR": 88,
+                "SpO2": "92%"
+              }
+            },
+            {
+              "type": "Pathology",
+              "event_date": "2025-01-29T16:00:00",
+              "category": "Diagnostic",
+              "details": "Urgent blood tests",
+              "results": {
+                "BNP": 450,
+                "Troponin": "Negative"
+              },
+              "result_date": "2025-01-29T17:30:00"
+            }
+          ],
+          "notes": [
+            {
+              "note_id": "n4",
+              "type": "ED Triage",
+              "title": "Initial Assessment",
+              "start_date": "2025-01-29T15:00:00",
+              "end_date": "2025-01-29T16:00:00",
+              "content": "Patient admitted with acute shortness of breath. History of heart failure noted. Elevated blood pressure observed."
+            }
+          ]
+        },
+        "similarity_score": 0.45,
+        "feature_importance": {
+          "heart_failure": 0.15,
+          "high_bp": 0.12,
+          "shortness_of_breath": 0.10,
+          "oxygen_dependency": 0.09,
+          "chest_pain": 0.08
+        }
+      }
+    ]
+  }

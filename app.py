@@ -6,8 +6,8 @@ st.set_page_config(page_title="Hospital In The Home Model Explainability", layou
 
 # Global title for all pages
 st.title("HEART Model Explainability")
-st.caption("Prototype designed to build confidence and support the safe and responsible \
-           adoption of Machine Learning and Artifificial Intelligence at Alfred Health")
+st.caption("Prototype model explainability tool, designed for clinicians to explore the factors influencing patient eligibility predictions for Hospital in the Home care.")
+    
 
 # Load patient data
 patients = load_data()

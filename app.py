@@ -2,7 +2,11 @@ import streamlit as st
 from helpers import load_data, generate_prediction_rationale, extract_emr_snippets, plot_feature_importance, display_similar_patients
 
 # Set page config for better UX
-st.set_page_config(page_title="Hospital in the Home ML Explainability", layout="wide")
+st.set_page_config(page_title="Hospital In The Home Model Explainability", layout="wide")
+
+# Global title and caption for all pages
+st.title("Hospital In The Home Model Explainability")
+st.caption("Prototype for Model Explainability Data Tool")
 
 # Load patient data
 patients = load_data()
@@ -23,14 +27,18 @@ tab1, tab2, tab3, tab4 = st.tabs(["Prediction Summary", "EMR Snippets", "Feature
 
 with tab1:
     st.header("Prediction Summary")
-    # Show overall prediction and similarity score
-    eligibility_text = "Eligible" if patient["eligible"] else "Not Eligible"
-    st.subheader(f"Prediction: {eligibility_text}")
-    st.write(f"**Similarity Score:** {patient['similarity_score']}")
+    # Use color to highlight the prediction. Green for eligible, red for not eligible.
+    if patient["eligible"]:
+        prediction_display = '<span style="color: green; font-size:24px;">Eligible</span>'
+    else:
+        prediction_display = '<span style="color: red; font-size:24px;">Not Eligible</span>'
     
+    st.markdown(f"**Prediction:** {prediction_display}", unsafe_allow_html=True)
+    st.write(f"**Similarity Score:** {patient['similarity_score']}")
+
     # Display text-based rationale for clinicians (simulate hyperlinks using markdown anchors)
     rationale = generate_prediction_rationale(patient)
-    st.markdown(rationale)
+    st.markdown(rationale, unsafe_allow_html=True)
     
     # Display additional patient info
     st.markdown("#### Additional Patient Information")
@@ -43,15 +51,17 @@ with tab2:
     snippets = extract_emr_snippets(patient)
     for snippet in snippets:
         st.markdown(f"**{snippet['type']}** - {snippet['title']} ({snippet['date']})")
-        # Display snippet with simulated highlighting (here we just mark with emojis)
+        
         snippet_text = snippet["snippet"]
+        # For each highlight, replace the key text with styled HTML markup
         for hl in snippet["highlights"]:
             if hl["impact"] == "positive":
-                # For example, wrap with a green marker
-                snippet_text = snippet_text.replace(hl["span"], f"🟢**{hl['span']}**")
+                styled_span = f'<span style="color: green; font-weight: bold;">{hl["span"]}</span>'
             else:
-                snippet_text = snippet_text.replace(hl["span"], f"🔴**{hl['span']}**")
-        st.write(snippet_text)
+                styled_span = f'<span style="color: red; font-style: italic; font-weight: bold;">{hl["span"]}</span>'
+            snippet_text = snippet_text.replace(hl["span"], styled_span)
+        
+        st.markdown(snippet_text, unsafe_allow_html=True)
         st.markdown("---")
 
 with tab3:

@@ -1,0 +1,51 @@
+# Hospital In The Home Model Explainability Prototype
+
+This is a proof-of-concept (PoC) Streamlit application built to provide explainability for a machine learning model that identifies patients eligible for Hospital In The Home care. The app is designed to build clinician trust by visualizing model predictions, providing text-based rationales, displaying EMR snippets with relevant highlights, showcasing feature importances, and comparing the patient with similar past cases.
+
+## Features
+
+- **Sidebar for Patient Selection:**  
+  Select a patient from the list to view detailed prediction information and clinical data.
+
+- **Prediction Summary Tab:**  
+  - Displays the prediction (highlighted in green for eligible, red for not eligible).
+  - Shows a similarity score.
+  - Provides a text-based rationale that explains why the patient was predicted as eligible or not, including references (hyperlinks) to relevant clinical notes.
+  - Displays additional patient information (diagnosis, vitals, medical specialty).
+
+- **EMR Snippets Tab:**  
+  - Lists snippets extracted from various clinical notes (e.g., ED Triage, Nursing Progress, Radiology Reports).
+  - Highlights relevant text spans using color, bold, and italics to indicate positive or negative contributions to the prediction.
+
+- **Feature Importance Chart Tab:**  
+  - Visualizes the top feature importances (using a bar chart) contributing to the prediction.
+
+- **Similar Patients Tab:**  
+  - Displays the top 3–5 most similar past patients who were successfully treated at home.
+  - Each similar patient is shown in a clickable expander with key clinical factors.
+
+## Data Sources & Structure
+
+- **Data File:**  
+  The app uses a JSON file (`data.json`) to load dummy patient data. The dummy data includes:
+  - Patient demographics and clinical information.
+  - Clinical notes of various types (e.g., ED Triage, Radiology Report).
+  - Similarity scores and feature importance values.
+  - Similar patients information for nearest-neighbor visualizations.
+
+- **Helper Functions:**  
+  Helper functions for loading data, generating rationale, extracting EMR snippets, plotting feature importance, and displaying similar patients are contained in the `helpers.py` file.
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have Python 3.7+ installed along with the following packages:
+
+- streamlit
+- matplotlib
+
+Install dependencies using:
+
+```bash
+pip install streamlit matplotlib

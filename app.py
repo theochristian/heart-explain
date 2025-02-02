@@ -5,9 +5,9 @@ from helpers import load_data, generate_prediction_rationale, extract_emr_snippe
 st.set_page_config(page_title="Hospital In The Home Model Explainability", layout="wide")
 
 # Global title for all pages
-st.title("HEART Model Explainability")
-st.caption("Prototype model explainability tool, designed for clinicians to explore the factors influencing patient eligibility predictions for Hospital in the Home care.")
-    
+st.title("HEART Prediction Explorer")
+st.caption("A tool designed for clinicians to explore and understand factors \
+           influencing predictions for Hospital in the Home eligibility.")
 
 # Load patient data
 patients = load_data()
@@ -48,6 +48,7 @@ with tab1:
 
 with tab2:
     st.header("EMR Snippets")
+    st.write("Below are the clinical notes used by the model. Click on a note hyperlink from the Prediction Summary to jump here.")
     snippets = extract_emr_snippets(patient)
     for snippet in snippets:
         st.markdown(f"**{snippet['type']}** - {snippet['title']} ({snippet['date']})")
@@ -66,11 +67,14 @@ with tab2:
 
 with tab3:
     st.header("Feature Importance Chart")
+    st.write("The chart below shows the relative importance of different features extracted from the patient's medical record. Features are sorted in descending order by importance.")
+    # st.write("This chart shows the importance of various words/bi-grams extracted from the patient records. The features are sorted in descending order by importance.")
     plot_feature_importance(patient)
 
 with tab4:
     st.header("Similar Patients")
+    st.write("below are the top 3-5 most similar patient episodes containing a HITH admission")
     display_similar_patients(patient)
 
 # Global footnote for all pages
-# st.caption("Prototype for Model Explainability Data Tool")
+st.caption("Prototype Model Explainability Dashboard. For demonstration purposes only.")

@@ -5,7 +5,7 @@ from helpers import load_data, generate_prediction_rationale, extract_emr_snippe
 st.set_page_config(page_title="Hospital In The Home Model Explainability", layout="wide")
 
 # Global title for all pages
-st.title("HEART Prediction Explorer")
+st.title("HEART Model Explainability")
 st.caption("A tool designed for clinicians to explore factors \
            influencing predictions for Hospital in the Home eligibility.")
 
